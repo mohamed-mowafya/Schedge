@@ -7,3 +7,5 @@ load_dotenv()
 class Config:
     DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://schedge:schedge@localhost:5432/schedge")
     ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+
+config_instance = Config()

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from api.models.availability import Availability
+from backend.app.api.models.availability_model import AvailabilityModel
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from typing import List
@@ -14,15 +14,15 @@ def handle_submit_availability(
     time_slots: List[str],
 ):
     try:
-        db.query(Availability).filter(
-            Availability.session_id == session_id, Availability.user_id == user_id
+        db.query(AvailabilityModel).filter(
+            AvailabilityModel.session_id == session_id, AvailabilityModel.user_id == user_id
         ).delete()
 
         now = datetime.utcnow()
 
         for slot in time_slots:
             db.add(
-                Availability(
+                AvailabilityModel(
                     session_id=session_id,
                     user_id=user_id,
                     name=name,
@@ -44,9 +44,9 @@ def handle_submit_availability(
 def handle_get_availability(db: Session, session_id: str):
     try:
         return (
-            db.query(Availability)
-            .filter(Availability.session_id == session_id)
-            .order_by(Availability.time_slot.asc())
+            db.query(AvailabilityModel)
+            .filter(AvailabilityModel.session_id == session_id)
+            .order_by(AvailabilityModel.time_slot.asc())
             .all()
         )
 
