@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from backend.app.api.models.availability_model import AvailabilityModel
+from api.models.availability_model import AvailabilityModel
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from typing import List

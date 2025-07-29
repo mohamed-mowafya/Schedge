@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from backend.app.api.models.session_model import SessionModel
+from api.models.session_model import SessionModel
 
 def fetch_session(session_id: str, db: SessionModel):
     try:

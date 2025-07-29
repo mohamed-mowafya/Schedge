@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from database import get_db
-from sqlalchemy.orm import Session
-from backend.app.api.models.session_model import SessionModel
+from api.models.session_model import SessionModel
 from api.v1.routes.handlers.session_handler import fetch_session, add_session
 from api.schemas.session_schema import SessionSchema
 
