@@ -1,6 +1,20 @@
 version: '3.8'
 
 services:
+  frontend:
+    build:
+      context: ./www
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./www:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://api:8000
+    depends_on:
+      - api
+
   api:
     build:
       context: ./backend/app
