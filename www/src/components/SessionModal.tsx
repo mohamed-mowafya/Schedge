@@ -7,7 +7,7 @@ interface SessionFormValues {
 }
 
 interface SessionModalProps {
-  onSubmit: (values: SessionFormValues) => void;
+  onSubmit: (values: SessionFormValues, close: () => void) => void;
 }
 
 export const SessionModal = (props: SessionModalProps) => {
@@ -39,7 +39,7 @@ export const SessionModal = (props: SessionModalProps) => {
           </p>
           <p className="text-gray-400">What will your session be used for ?</p>
 
-          <form onSubmit={form.onSubmit((values) => props.onSubmit(values))}>
+          <form onSubmit={form.onSubmit((values) => props.onSubmit(values, close))}>
             <Select
               label="Session Type"
               placeholder="Select session type"
@@ -58,22 +58,22 @@ export const SessionModal = (props: SessionModalProps) => {
               ]}
               {...form.getInputProps("sessionType")}
             />
+            <Group justify="flex-end" mt="md">
+              <Button
+                styles={{
+                  root: {
+                    backgroundColor: "#9333ea",
+                    "&:hover": { backgroundColor: "#7e22ce" },
+                    fontWeight: 600,
+                    borderRadius: "0.5rem",
+                  },
+                }}
+                type="submit"
+              >
+                Create
+              </Button>
+            </Group>
           </form>
-          <Group justify="flex-end" mt="md">
-            <Button
-              styles={{
-                root: {
-                  backgroundColor: "#9333ea",
-                  "&:hover": { backgroundColor: "#7e22ce" },
-                  fontWeight: 600,
-                  borderRadius: "0.5rem",
-                },
-              }}
-              type="submit"
-            >
-              Create
-            </Button>
-          </Group>
         </div>
       </Modal>
 

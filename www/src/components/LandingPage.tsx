@@ -1,6 +1,61 @@
+import { useMutation } from "@tanstack/react-query";
 import { SessionModal } from "./SessionModal";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const LandingPage = () => {
+  const createSessionMutation = useMutation({
+    mutationFn: async (sessionData: { sessionType: string; title: string }) => {
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/sessions/`,
+        sessionData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    },
+    onSuccess: () => {
+      toast.success("Session created successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    },
+    onError: (error) => {
+      toast.error("Error creating session: " + error.message, {
+        position: "top-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    },
+  });
+
+  const handleSubmit = (values: { sessionType: string }, close: () => void) => {
+    let title = "";
+    switch (values.sessionType) {
+      case "friends_meeting":
+        title = `Friends Meeting - ${new Date().toLocaleDateString()}`;
+        break;
+      case "work_meeting":
+        title = `Work Meeting - ${new Date().toLocaleDateString()}`;
+        break;
+      case "other":
+        title = `Other Session - ${new Date().toLocaleDateString()}`;
+        break;
+    }
+    createSessionMutation.mutate({ ...values, title });
+    close();
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4 font-sans">
       <div className="max-w-6xl mx-auto w-full">
@@ -12,7 +67,7 @@ const LandingPage = () => {
             <p className="text-xl text-gray-300">
               Schedge makes group scheduling fast, simple, and beautiful.
             </p>
-            <SessionModal/>
+            <SessionModal onSubmit={handleSubmit} />
           </div>
 
           <div className="relative w-32 h-32 flex-shrink-0">

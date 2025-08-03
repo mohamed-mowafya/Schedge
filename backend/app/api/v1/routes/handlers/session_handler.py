@@ -9,9 +9,9 @@ def fetch_session(session_id: str, db: SessionModel):
     except SQLAlchemyError as e:
         raise e
 
-def add_session(session_id: str, db: SessionModel):
+def add_session(db: SessionModel, session_data: dict):
     try:
-        new_session = SessionModel(id=session_id)
+        new_session = SessionModel(**session_data)
         db.add(new_session)
         db.commit()
         db.refresh(new_session)

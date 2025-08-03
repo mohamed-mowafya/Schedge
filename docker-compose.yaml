@@ -11,7 +11,7 @@ services:
       - ./www:/app
       - /app/node_modules
     environment:
-      - VITE_API_URL=http://api:8000
+      - VITE_API_URL=http://localhost:8000
     depends_on:
       - api
 
@@ -23,6 +23,7 @@ services:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql://schedge:schedge@db:5432/schedge
+      - FRONTEND_URL=http://localhost:5173
     volumes:
       - ./backend/app:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
