@@ -2,11 +2,20 @@ import { useMutation } from "@tanstack/react-query";
 import { SessionModal } from "./SessionModal";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  interface Session {
+    id: number;
+    title: string;
+    session_uuid: string;
+    created_at: string;
+    updated_at: string;
+  }
   const createSessionMutation = useMutation({
-    mutationFn: async (sessionData: { sessionType: string; title: string }) => {
-      await axios.post(
+    mutationFn: async (sessionData: { sessionType: string; title: string }): Promise<Session> => {
+      const { data } = await axios.post<Session>(
         `${import.meta.env.VITE_API_URL}/sessions/`,
         sessionData,
         {
@@ -15,8 +24,9 @@ const LandingPage = () => {
           },
         }
       );
+      return data;
     },
-    onSuccess: () => {
+    onSuccess: (session) => {
       toast.success("Session created successfully!", {
         position: "top-right",
         autoClose: 5000,
@@ -26,6 +36,7 @@ const LandingPage = () => {
         draggable: true,
         progress: undefined,
       });
+      redirectToCalendar(session);
     },
     onError: (error) => {
       toast.error("Error creating session: " + error.message, {
@@ -39,6 +50,10 @@ const LandingPage = () => {
       });
     },
   });
+
+  const redirectToCalendar = (session: Session) => {
+    navigate(`/calendar/${session?.session_uuid}`, { state: { session } });
+  };
 
   const handleSubmit = (values: { sessionType: string }, close: () => void) => {
     let title = "";

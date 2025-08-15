@@ -4,6 +4,7 @@ from datetime import datetime
 class SessionSchema(BaseModel):
     id: int
     title: str
+    session_uuid: str
     created_at: datetime
     updated_at: datetime
 

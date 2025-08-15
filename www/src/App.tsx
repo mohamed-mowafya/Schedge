@@ -25,6 +25,16 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/calendar/*",
+    element: <RootLayout/>,
+    children: [
+      {
+        index: true,
+        element: <></>
+      }
+    ]
+  }
 ]);
 
 const App = () => {

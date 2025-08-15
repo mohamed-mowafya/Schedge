@@ -3,6 +3,7 @@ from database import get_db
 from api.models.session_model import SessionModel
 from api.v1.routes.handlers.session_handler import fetch_session, add_session
 from api.schemas.session_schema import SessionPayload, SessionSchema
+import uuid
 
 session_router = APIRouter(prefix="/sessions", tags=["lobby"])
 
@@ -23,5 +24,7 @@ def create_session(
     session_data: SessionPayload,
     db: SessionModel = Depends(get_db),
 ) -> SessionSchema:
-    new_session = add_session(db, session_data.dict())
+    session_data_dict = session_data.dict()
+    session_data_dict["session_uuid"] = uuid.uuid4()
+    new_session = add_session(db, session_data_dict)
     return new_session

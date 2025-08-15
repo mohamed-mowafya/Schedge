@@ -7,7 +7,7 @@ class AvailabilityModel(Base):
     __tablename__ = "availabilities"
 
     id = Column(Integer, primary_key=True)
-    session_id = Column(String, ForeignKey("sessions.id"), nullable=False)
+    session_id = Column(Integer, ForeignKey("sessions.id"), nullable=False)
     user_id = Column(String, nullable=False)  # client-generated UUID
     name = Column(String, nullable=True) 
     time_slot = Column(String, nullable=False)  # ISO datetime as string
