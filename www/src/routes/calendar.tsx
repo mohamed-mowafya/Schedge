@@ -1,4 +1,4 @@
-import CalendarPage from "../components/CalendarPage";
+import CalendarPage from "../pages/CalendarPage";
 
 const HomePage = () => {
   return <CalendarPage />;

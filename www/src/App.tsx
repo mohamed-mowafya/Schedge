@@ -6,7 +6,7 @@ import HomePage from "./routes/home";
 import RootLayout from "./routes/root";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
-import CalendarPage from "./components/CalendarPage";
+import CalendarPage from "./pages/CalendarPage";
 import './calendar-tailwind.css';
 
 const queryClient = new QueryClient();
