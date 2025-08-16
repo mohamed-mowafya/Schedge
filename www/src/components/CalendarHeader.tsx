@@ -1,8 +1,13 @@
 import { useCopyLink } from "../hooks/useCopyLink";
 
-type Props = { title?: string; isLoading?: boolean; sessionUUID?: string };
+type Props = { 
+  title?: string; 
+  isLoading?: boolean; 
+  sessionUUID?: string;
+  onAddAvailability?: () => void;
+};
 
-export const CalendarHeader = ({ title, isLoading, sessionUUID }: Props) => {
+export const CalendarHeader = ({ title, isLoading, sessionUUID, onAddAvailability }: Props) => {
   const { copyLink } = useCopyLink(sessionUUID);
 
   return (
@@ -32,7 +37,10 @@ export const CalendarHeader = ({ title, isLoading, sessionUUID }: Props) => {
             Copy Link
           </button>
 
-          <button className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition-colors duration-200 shadow-sm">
+          <button 
+            onClick={onAddAvailability}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition-colors duration-200 shadow-sm"
+          >
             Add Availability
           </button>
         </div>

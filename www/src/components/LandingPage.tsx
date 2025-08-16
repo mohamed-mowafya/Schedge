@@ -62,7 +62,7 @@ const LandingPage = () => {
               Plan Together. Meet Easier.
             </h1>
             <p className="text-xl text-gray-300">
-              Schedge makes group scheduling fast, simple, and beautiful.
+              Skedgly makes group scheduling fast, simple, and beautiful.
             </p>
             <SessionModal onSubmit={handleSubmit} />
           </div>

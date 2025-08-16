@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import CalendarPage from "./pages/CalendarPage";
 import './calendar-tailwind.css';
-
+import '@mantine/dates/styles.css';
 const queryClient = new QueryClient();
 
 const AppWrapper = ({ children }: { children: React.ReactNode }) => {

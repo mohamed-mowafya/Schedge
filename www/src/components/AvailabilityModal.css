@@ -1,0 +1,197 @@
+.availability-modal .mantine-Modal-header {
+  background-color: #1a1b1e;
+  color: #fff;
+}
+
+.availability-modal .mantine-Modal-content {
+  background-color: #1a1b1e;
+}
+
+.availability-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.availability-modal-description {
+  color: #d1d5db;
+}
+
+.availability-modal-field {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.availability-modal-label {
+  display: block;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.mantine-DateTimePicker-monthRow td button {
+  color: white;
+}
+.mantine-DateTimePicker-monthRow td button:hover {
+  color: #9333ea;
+  background-color: #373a40 !important;
+}
+.mantine-Popover-dropdown {
+  color: white;
+}
+.mantine-DateTimePicker-calendarHeader button:hover {
+  color: #9333ea;
+  background-color: #373a40 !important;
+}
+.availability-modal .mantine-Input-input {
+  background-color: #2d2d2d;
+  color: #fff;
+  border-color: #373a40;
+}
+
+.availability-modal .mantine-Input-input:focus {
+  border-color: #9333ea;
+}
+
+/* DateTimePicker styling */
+.availability-modal .mantine-DateTimePicker-root .mantine-Input-input {
+  background-color: #2d2d2d !important;
+  color: #fff !important;
+  border-color: #373a40 !important;
+}
+
+.availability-modal .mantine-DateTimePicker-root .mantine-Input-input:focus {
+  border-color: #9333ea !important;
+}
+
+.availability-modal .mantine-DateTimePicker-root .mantine-InputWrapper-label {
+  color: white !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Popover and Calendar styling */
+.mantine-DatePicker-calendar {
+  background-color: #1a1b1e !important;
+  border-color: #373a40 !important;
+}
+
+.mantine-Calendar-month {
+  background-color: #1a1b1e !important;
+}
+
+.mantine-Calendar-monthHeader {
+  color: #fff !important;
+}
+
+.mantine-Calendar-weekdayHeader {
+  color: #9ca3af !important;
+}
+
+.mantine-Calendar-day {
+  color: #fff !important;
+  background-color: transparent !important;
+}
+
+.mantine-Calendar-day:hover {
+  background-color: #374151 !important;
+}
+
+.mantine-Calendar-day[data-selected] {
+  background-color: #9333ea !important;
+  color: white !important;
+}
+
+.mantine-Calendar-day[data-today] {
+  background-color: #4f46e5 !important;
+  color: white !important;
+}
+
+/* Time picker styling */
+.mantine-TimeInput-input {
+  background-color: #2d2d2d !important;
+  color: #fff !important;
+  border-color: #373a40 !important;
+}
+
+.mantine-TimeInput-input:focus {
+  border-color: #9333ea !important;
+}
+
+/* Time picker dropdown */
+.mantine-TimeInput-dropdown {
+  background-color: #1a1b1e !important;
+  border-color: #373a40 !important;
+}
+
+.mantine-TimeInput-timeInput {
+  background-color: #2d2d2d !important;
+  color: #fff !important;
+  border-color: #373a40 !important;
+}
+
+/* Popover wrapper */
+.mantine-Popover-dropdown {
+  background-color: #1a1b1e !important;
+  border-color: #373a40 !important;
+}
+
+.availability-modal-popover {
+  background-color: #1a1b1e !important;
+  border-color: #373a40 !important;
+}
+
+.availability-modal-popover .mantine-Calendar-month {
+  background-color: #1a1b1e !important;
+}
+
+.availability-modal-popover .mantine-Calendar-monthHeader {
+  color: #fff !important;
+}
+
+.availability-modal-popover .mantine-Calendar-weekdayHeader {
+  color: #9ca3af !important;
+}
+
+.availability-modal-popover .mantine-Calendar-day {
+  color: #fff !important;
+  background-color: transparent !important;
+}
+
+.availability-modal-popover .mantine-Calendar-day:hover {
+  background-color: #374151 !important;
+}
+
+.availability-modal-popover .mantine-Calendar-day[data-selected] {
+  background-color: #9333ea !important;
+  color: white !important;
+}
+
+.availability-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  gap: 0.5rem;
+}
+
+.availability-modal-cancel-btn {
+  border-color: #6b7280;
+  color: #9ca3af;
+}
+
+.availability-modal-cancel-btn:hover {
+  background-color: #374151;
+}
+
+.availability-modal-submit-btn {
+  background-color: #9333ea;
+  font-weight: 600;
+  border-radius: 0.5rem;
+}
+
+.availability-modal-submit-btn:hover {
+  background-color: #7e22ce;
+}
