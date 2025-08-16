@@ -34,5 +34,6 @@ export const fetchSession = async (sessionUUID: string): Promise<Session> => {
 export const createEvent = async (
   eventPayload: CalendarEvent
 ): Promise<void> => {
+  if (!eventPayload.endDate) eventPayload.endDate = null;
   await apiClient.post<void>("/availability", eventPayload);
 };
