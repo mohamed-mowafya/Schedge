@@ -4,24 +4,27 @@ import { DateTimePicker } from "@mantine/dates";
 
 import "./AvailabilityModal.css";
 import { useEffect } from "react";
-import type { CalendarEvent } from "../interfaces/AvailabilityInterfaces";
+import type { CalendarEventRequest } from "../interfaces/AvailabilityInterfaces";
 
 interface AvailabilityModalProps {
   isOpen: boolean;
+  sessionUUID: string | undefined;
   onClose: () => void;
-  onSubmit: (values: CalendarEvent) => void;
+  onSubmit: (values: CalendarEventRequest) => void;
 }
 
 export const AvailabilityModal = ({
   isOpen,
   onClose,
   onSubmit,
+  sessionUUID,
 }: AvailabilityModalProps) => {
-  const form = useForm<CalendarEvent>({
+  const form = useForm<CalendarEventRequest>({
     mode: "uncontrolled",
     validateInputOnBlur: true,
     validateInputOnChange: true,
     initialValues: {
+      sessionUUID: sessionUUID,
       name: "",
       eventName: "",
       startDate: "",
@@ -29,7 +32,7 @@ export const AvailabilityModal = ({
     },
   });
 
-  const handleSubmit = (values: CalendarEvent) => {
+  const handleSubmit = (values: CalendarEventRequest) => {
     onSubmit(values);
     form.reset();
     onClose();

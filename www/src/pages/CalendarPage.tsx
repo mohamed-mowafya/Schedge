@@ -2,18 +2,19 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useState, useMemo } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Session } from "../interfaces/SessionInterfaces";
 import { createEvent, fetchSession } from "../services/api";
 import { CalendarHeader } from "../components/CalendarHeader";
 import { AvailabilityModal } from "../components/AvailabilityModal";
-import type { CalendarEvent } from "../interfaces/AvailabilityInterfaces";
+import type { CalendarEventRequest } from "../interfaces/AvailabilityInterfaces";
 
 const CalendarPage = () => {
   const { session_uuid } = useParams();
   const invalidSessionUUID = !session_uuid || typeof session_uuid !== "string";
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (invalidSessionUUID) {
@@ -29,27 +30,28 @@ const CalendarPage = () => {
   });
 
   const createAvailabilityMutation = useMutation({
-    mutationFn: async (eventData: CalendarEvent) => createEvent(eventData),
+    mutationFn: async (eventData: CalendarEventRequest) =>
+      createEvent(eventData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["session", session_uuid] });
+      setIsModalOpen(false);
+    },
   });
 
-  // const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAddAvailability = (values: {
-    name: string;
-    eventName: string;
-    startDate: string;
-    endDate: string;
-  }) => {
-    const newEvent: CalendarEvent = {
-      sessionUUID: session_uuid,
-      name: values.name,
-      eventName: values.eventName,
-      startDate: values.startDate,
-      endDate: values.endDate,
-    };
+  const calendarEvents = useMemo(() => {
+    if (!data?.availabilities) return [];
 
-    createAvailabilityMutation.mutate(newEvent);
+    return data.availabilities.map((availability) => ({
+      title: `${availability.name} - ${availability.eventName}`,
+      start: availability.startDate,
+      end: availability.endDate || undefined,
+    }));
+  }, [data?.availabilities]);
+
+  const handleAddAvailability = (values: CalendarEventRequest) => {
+    createAvailabilityMutation.mutate(values);
   };
 
   return (
@@ -83,7 +85,7 @@ const CalendarPage = () => {
               dayMaxEvents
               editable={true}
               selectable={true}
-              // initialEvents={events}
+              events={calendarEvents}
             />
           </div>
         </div>
@@ -107,6 +109,7 @@ const CalendarPage = () => {
         </div>
 
         <AvailabilityModal
+          sessionUUID={session_uuid}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onSubmit={handleAddAvailability}

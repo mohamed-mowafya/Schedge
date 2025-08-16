@@ -1,9 +1,8 @@
 import axios from "axios";
 import type { Session } from "../interfaces/SessionInterfaces";
-import type { CalendarEvent } from "../interfaces/AvailabilityInterfaces";
-import { convertKeysToSnakeCase } from "../utils/caseConversion";
+import type { CalendarEventRequest } from "../interfaces/AvailabilityInterfaces";
+import { convertKeysToSnakeCase, convertKeysToCamelCase } from "../utils/caseConversion";
 
-// Enhanced axios instance with automatic snake_case conversion for POST requests
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
@@ -11,12 +10,18 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor to convert POST request data keys to snake_case
 apiClient.interceptors.request.use((config) => {
-  if (config.method === "post" && config.data) {
+  if (["post", "put", "patch"].includes(config.method || "") && config.data) {
     config.data = convertKeysToSnakeCase(config.data);
   }
   return config;
+});
+
+apiClient.interceptors.response.use((response) => {
+  if (response.data) {
+    response.data = convertKeysToCamelCase(response.data);
+  }
+  return response;
 });
 
 export const createSession = async (sessionData: {
@@ -32,7 +37,7 @@ export const fetchSession = async (sessionUUID: string): Promise<Session> => {
 };
 
 export const createEvent = async (
-  eventPayload: CalendarEvent
+  eventPayload: CalendarEventRequest
 ): Promise<void> => {
   if (!eventPayload.endDate) eventPayload.endDate = null;
   await apiClient.post<void>("/availability", eventPayload);

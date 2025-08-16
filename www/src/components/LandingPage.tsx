@@ -35,7 +35,7 @@ const LandingPage = () => {
   });
 
   const redirectToCalendar = (session: Session) => {
-    navigate(`/calendar/${session?.session_uuid}`, { state: { session } });
+    navigate(`/calendar/${session?.sessionUUID}`, { state: { session } });
   };
 
   const handleSubmit = (values: { title: string }, close: () => void) => {

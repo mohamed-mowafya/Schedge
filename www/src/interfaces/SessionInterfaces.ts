@@ -1,7 +1,10 @@
+import type { CalendarEventResponse } from "./AvailabilityInterfaces";
+
 export interface Session {
   id: number;
   title: string;
-  session_uuid: string;
-  created_at: string;
-  updated_at: string;
+  sessionUUID: string;
+  createdAt: string;
+  updatedAt: string;
+  availabilities: Array<CalendarEventResponse>;
 }
