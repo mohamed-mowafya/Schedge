@@ -1,16 +1,19 @@
 from pydantic import BaseModel
 
+
 class SubmitAvailabilityRequest(BaseModel):
-    session_id: str
-    user_id: str
+    session_uuid: str
     name: str
-    time_slot: str
+    event_name: str
+    start_date: str
+    end_date: str | None
+
 
 class AvailabilityResponse(BaseModel):
-    session_id: str
-    user_id: str
     name: str
-    time_slot: str
+    event_name: str
+    start_date: str
+    end_date: str | None
 
     class Config:
         orm_mode = True

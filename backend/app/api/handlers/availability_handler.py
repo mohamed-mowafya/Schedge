@@ -1,39 +1,33 @@
 from sqlalchemy.orm import Session
 from api.models.availability_model import AvailabilityModel
-from datetime import datetime
+from api.models.session_model import SessionModel
 from sqlalchemy.exc import SQLAlchemyError
-from typing import List
 from fastapi import HTTPException
+from api.schemas.availability_schema import (
+    SubmitAvailabilityRequest,
+)
 
 
-def handle_submit_availability(
-    db: Session,
-    session_id: str,
-    user_id: str,
-    name: str,
-    time_slots: List[str],
-):
+def create_availability(db: Session, payload: SubmitAvailabilityRequest):
     try:
-        db.query(AvailabilityModel).filter(
-            AvailabilityModel.session_id == session_id, AvailabilityModel.user_id == user_id
-        ).delete()
+        payload_dict = payload.model_dump()
+        session_id = (
+            db.query(SessionModel)
+            .filter(SessionModel.session_uuid == payload_dict["session_uuid"])
+            .with_entities(SessionModel.id)
+            .one_or_none()
+        )
 
-        now = datetime.utcnow()
+        if not session_id:
+            # Fail silently to avoid session uuid enumeration.
+            return
 
-        for slot in time_slots:
-            db.add(
-                AvailabilityModel(
-                    session_id=session_id,
-                    user_id=user_id,
-                    name=name,
-                    time_slot=slot,
-                    created_at=now,
-                    updated_at=now,
-                )
-            )
+        payload_dict["session_id"] = session_id[0]
+        del payload_dict["session_uuid"]
 
+        availability = AvailabilityModel(**payload_dict)
+        db.add(availability)
         db.commit()
-
     except SQLAlchemyError:
         db.rollback()
         raise HTTPException(
