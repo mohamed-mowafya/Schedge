@@ -1,9 +1,9 @@
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button, Group, Select } from "@mantine/core";
+import { Modal, Button, Group, Input } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 interface SessionFormValues {
-  sessionType: string;
+  title: string;
 }
 
 interface SessionModalProps {
@@ -17,7 +17,7 @@ export const SessionModal = (props: SessionModalProps) => {
     validateInputOnBlur: true,
     validateInputOnChange: true,
     initialValues: {
-      sessionType: "",
+      title: "",
     },
   });
 
@@ -39,24 +39,22 @@ export const SessionModal = (props: SessionModalProps) => {
           </p>
           <p className="text-gray-400">What will your session be used for ?</p>
 
-          <form onSubmit={form.onSubmit((values) => props.onSubmit(values, close))}>
-            <Select
-              label="Session Type"
-              placeholder="Select session type"
+          <form
+            onSubmit={form.onSubmit((values) => props.onSubmit(values, close))}
+          >
+            <Input
+              placeholder="Enter session title"
+              {...form.getInputProps("title")}
               styles={{
-                label: { color: "#fff" },
                 input: {
-                  backgroundColor: "#25262b",
+                  backgroundColor: "#2d2d2d",
+                  borderColor: "#404040",
                   color: "#fff",
-                  borderColor: "#373A40",
+                  "&:focus": {
+                    borderColor: "#9333ea",
+                  },
                 },
               }}
-              data={[
-                { value: "friends_meeting", label: "Friends" },
-                { value: "work_meeting", label: "Work" },
-                { value: "other", label: "Other" },
-              ]}
-              {...form.getInputProps("sessionType")}
             />
             <Group justify="flex-end" mt="md">
               <Button
