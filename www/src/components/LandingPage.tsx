@@ -3,18 +3,12 @@ import { SessionModal } from "./SessionModal";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import type { Session } from "../interfaces/SessionInterfaces";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  interface Session {
-    id: number;
-    title: string;
-    session_uuid: string;
-    created_at: string;
-    updated_at: string;
-  }
   const createSessionMutation = useMutation({
-    mutationFn: async (sessionData: { sessionType: string; title: string }): Promise<Session> => {
+    mutationFn: async (sessionData: { title: string }): Promise<Session> => {
       const { data } = await axios.post<Session>(
         `${import.meta.env.VITE_API_URL}/sessions/`,
         sessionData,
@@ -55,20 +49,8 @@ const LandingPage = () => {
     navigate(`/calendar/${session?.session_uuid}`, { state: { session } });
   };
 
-  const handleSubmit = (values: { sessionType: string }, close: () => void) => {
-    let title = "";
-    switch (values.sessionType) {
-      case "friends_meeting":
-        title = `Friends Meeting - ${new Date().toLocaleDateString()}`;
-        break;
-      case "work_meeting":
-        title = `Work Meeting - ${new Date().toLocaleDateString()}`;
-        break;
-      case "other":
-        title = `Other Session - ${new Date().toLocaleDateString()}`;
-        break;
-    }
-    createSessionMutation.mutate({ ...values, title });
+  const handleSubmit = (values: { title: string }, close: () => void) => {
+    createSessionMutation.mutate({ ...values });
     close();
   };
   return (
@@ -80,7 +62,7 @@ const LandingPage = () => {
               Plan Together. Meet Easier.
             </h1>
             <p className="text-xl text-gray-300">
-              Schedge makes group scheduling fast, simple, and beautiful.
+              Skedgly makes group scheduling fast, simple, and beautiful.
             </p>
             <SessionModal onSubmit={handleSubmit} />
           </div>

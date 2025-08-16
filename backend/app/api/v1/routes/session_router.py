@@ -8,12 +8,12 @@ import uuid
 session_router = APIRouter(prefix="/sessions", tags=["lobby"])
 
 
-@session_router.get("/{session_id}", response_model=SessionSchema)
+@session_router.get("/{session_uuid}", response_model=SessionSchema)
 def get_session(
-    session_id: str,
+    session_uuid: str,
     db: SessionModel = Depends(get_db),
 ) -> SessionSchema:
-    session = fetch_session(session_id, db)
+    session = fetch_session(session_uuid, db)
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
     return session

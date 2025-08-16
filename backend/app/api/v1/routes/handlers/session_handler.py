@@ -2,9 +2,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from api.models.session_model import SessionModel
 
-def fetch_session(session_id: str, db: SessionModel):
+def fetch_session(session_uuid: str, db: SessionModel):
     try:
-        session = db.query(SessionModel).filter(SessionModel.id == session_id).first()
+        session = db.query(SessionModel).filter(SessionModel.session_uuid == session_uuid).first()
         return session
     except SQLAlchemyError as e:
         raise e
