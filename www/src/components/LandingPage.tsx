@@ -1,25 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { SessionModal } from "./SessionModal";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import type { Session } from "../interfaces/SessionInterfaces";
+import { createSession } from "../services/api";
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const createSessionMutation = useMutation({
-    mutationFn: async (sessionData: { title: string }): Promise<Session> => {
-      const { data } = await axios.post<Session>(
-        `${import.meta.env.VITE_API_URL}/sessions/`,
-        sessionData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      return data;
-    },
+    mutationFn: async (sessionData: { title: string }) => createSession(sessionData),
     onSuccess: (session) => {
       toast.success("Session created successfully!", {
         position: "top-right",
@@ -50,7 +39,7 @@ const LandingPage = () => {
   };
 
   const handleSubmit = (values: { title: string }, close: () => void) => {
-    createSessionMutation.mutate({ ...values });
+    createSessionMutation.mutate(values);
     close();
   };
   return (

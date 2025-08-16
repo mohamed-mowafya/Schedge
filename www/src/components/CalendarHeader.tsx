@@ -34,7 +34,7 @@ export const CalendarHeader = ({ title, isLoading, sessionUUID, onAddAvailabilit
             onClick={copyLink}
             className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200 shadow-sm"
           >
-            Copy Link
+            Share Calendar
           </button>
 
           <button 

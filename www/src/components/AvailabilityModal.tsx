@@ -1,18 +1,15 @@
 import { Modal, Button, Group, Input } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { DateTimePicker, TimePicker } from "@mantine/dates";
+import { DateTimePicker } from "@mantine/dates";
 
 import "./AvailabilityModal.css";
-
-interface AvailabilityFormValues {
-  name: string;
-  timeSlot: string;
-}
+import { useEffect } from "react";
+import type { CalendarEvent } from "../interfaces/AvailabilityInterfaces";
 
 interface AvailabilityModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (values: AvailabilityFormValues) => void;
+  onSubmit: (values: CalendarEvent) => void;
 }
 
 export const AvailabilityModal = ({
@@ -20,26 +17,29 @@ export const AvailabilityModal = ({
   onClose,
   onSubmit,
 }: AvailabilityModalProps) => {
-  const form = useForm<AvailabilityFormValues>({
+  const form = useForm<CalendarEvent>({
     mode: "uncontrolled",
     validateInputOnBlur: true,
     validateInputOnChange: true,
     initialValues: {
       name: "",
-      timeSlot: "",
-    },
-    validate: {
-      name: (value) => (value.length < 1 ? "Name is required" : null),
-      timeSlot: (value) =>
-        value.length < 1 ? "Please select a time slot" : null,
+      eventName: "",
+      startDate: "",
+      endDate: "",
     },
   });
 
-  const handleSubmit = (values: AvailabilityFormValues) => {
+  const handleSubmit = (values: CalendarEvent) => {
     onSubmit(values);
     form.reset();
     onClose();
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      form.reset();
+    }
+  }, [isOpen]);
 
   return (
     <Modal
@@ -66,22 +66,33 @@ export const AvailabilityModal = ({
               {...form.getInputProps("name")}
             />
           </div>
-            <DateTimePicker
-              label="Date and start time"
-              placeholder="Date and start time"
-              timePickerProps={{
-                withDropdown: true,
-                popoverProps: { withinPortal: false },
-                format: "12h",
-              }}
+          <div className="availability-modal-field">
+            <label className="availability-modal-label">Event name</label>
+            <Input
+              placeholder="Enter your event's name"
+              {...form.getInputProps("eventName")}
             />
-            <TimePicker
-              label="Enter time (12h format)"
-              withSeconds
-              withDropdown
-              format="12h"
-              mt="md"
-            />
+          </div>
+          <DateTimePicker
+            label="Start date"
+            placeholder="Start date"
+            {...form.getInputProps("startDate")}
+            timePickerProps={{
+              withDropdown: true,
+              popoverProps: { withinPortal: false },
+              format: "12h",
+            }}
+          />
+          <DateTimePicker
+            label="End date"
+            placeholder="End date"
+            {...form.getInputProps("startDate")}
+            timePickerProps={{
+              withDropdown: true,
+              popoverProps: { withinPortal: false },
+              format: "12h",
+            }}
+          />
           <Group className="availability-modal-buttons">
             <Button
               variant="outline"

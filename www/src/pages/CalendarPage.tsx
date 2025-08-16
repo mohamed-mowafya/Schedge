@@ -3,18 +3,12 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { Session } from "../interfaces/SessionInterfaces";
-import { fetchSession } from "../services/api";
+import { createEvent, fetchSession } from "../services/api";
 import { CalendarHeader } from "../components/CalendarHeader";
 import { AvailabilityModal } from "../components/AvailabilityModal";
-
-interface CalendarEvent {
-  title: string;
-  start: string;
-  end?: string;
-  allDay?: boolean;
-}
+import type { CalendarEvent } from "../interfaces/AvailabilityInterfaces";
 
 const CalendarPage = () => {
   const { session_uuid } = useParams();
@@ -34,18 +28,28 @@ const CalendarPage = () => {
     enabled: !invalidSessionUUID,
   });
 
+  const createAvailabilityMutation = useMutation({
+    mutationFn: async (eventData: CalendarEvent) => createEvent(eventData),
+  });
+
   // const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAddAvailability = (values: { name: string; timeSlot: string;}) => {
-    // Create a new event from the form data
+  const handleAddAvailability = (values: {
+    name: string;
+    eventName: string;
+    startDate: string;
+    endDate: string;
+  }) => {
     const newEvent: CalendarEvent = {
-      title: `${values.name} available`,
-      start: values.timeSlot,
+      sessionUUID: session_uuid,
+      name: values.name,
+      eventName: values.eventName,
+      startDate: values.startDate,
+      endDate: values.endDate,
     };
 
-    console.log(newEvent);
-    
+    createAvailabilityMutation.mutate(newEvent);
   };
 
   return (
@@ -73,7 +77,7 @@ const CalendarPage = () => {
                 week: "Week",
                 day: "Day",
               }}
-              height="75vh"
+              height="70vh"
               expandRows
               navLinks
               dayMaxEvents
@@ -83,7 +87,25 @@ const CalendarPage = () => {
             />
           </div>
         </div>
-        
+
+        <div className="flex justify-center items-center mt-8 mb-4">
+          <div className="group relative">
+            <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 rounded-lg blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+            <div className="relative bg-gray-800/80 backdrop-blur-sm border border-gray-700/60 rounded-lg px-6 py-3 shadow-lg">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                <span className="text-gray-300 text-sm font-medium">
+                  Powered by{" "}
+                  <span className="bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent font-bold tracking-wide">
+                    Skedgly
+                  </span>
+                </span>
+                <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse delay-300"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <AvailabilityModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
