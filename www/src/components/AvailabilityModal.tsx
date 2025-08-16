@@ -5,6 +5,7 @@ import { DateTimePicker } from "@mantine/dates";
 import "./AvailabilityModal.css";
 import { useEffect } from "react";
 import type { CalendarEventRequest } from "../interfaces/AvailabilityInterfaces";
+import { availabilityValidation } from "../utils/validators/availabilityValidator";
 
 interface AvailabilityModalProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ export const AvailabilityModal = ({
       startDate: "",
       endDate: "",
     },
+    validate: availabilityValidation,
   });
 
   const handleSubmit = (values: CalendarEventRequest) => {
@@ -63,23 +65,26 @@ export const AvailabilityModal = ({
           className="availability-modal-form"
         >
           <div className="availability-modal-field">
-            <label className="availability-modal-label">Your Name</label>
+            <label className="availability-modal-label">Your Name *</label>
             <Input
               placeholder="Enter your name"
               {...form.getInputProps("name")}
+              error={form.errors.name}
             />
           </div>
           <div className="availability-modal-field">
-            <label className="availability-modal-label">Event name</label>
+            <label className="availability-modal-label">Event name *</label>
             <Input
               placeholder="Enter your event's name"
               {...form.getInputProps("eventName")}
+              error={form.errors.eventName}
             />
           </div>
           <DateTimePicker
-            label="Start date"
+            label="Start date *"
             placeholder="Start date"
             {...form.getInputProps("startDate")}
+            error={form.errors.startDate}
             timePickerProps={{
               withDropdown: true,
               popoverProps: { withinPortal: false },
@@ -89,7 +94,8 @@ export const AvailabilityModal = ({
           <DateTimePicker
             label="End date"
             placeholder="End date"
-            {...form.getInputProps("startDate")}
+            {...form.getInputProps("endDate")}
+            error={form.errors.endDate}
             timePickerProps={{
               withDropdown: true,
               popoverProps: { withinPortal: false },

@@ -9,6 +9,7 @@ import { createEvent, fetchSession } from "../services/api";
 import { CalendarHeader } from "../components/CalendarHeader";
 import { AvailabilityModal } from "../components/AvailabilityModal";
 import type { CalendarEventRequest } from "../interfaces/AvailabilityInterfaces";
+import "../calendar.css";
 
 const CalendarPage = () => {
   const { session_uuid } = useParams();
@@ -47,6 +48,7 @@ const CalendarPage = () => {
       title: `${availability.name} - ${availability.eventName}`,
       start: availability.startDate,
       end: availability.endDate || undefined,
+      className: "fc-event-custom",
     }));
   }, [data?.availabilities]);
 
@@ -86,6 +88,7 @@ const CalendarPage = () => {
               editable={true}
               selectable={true}
               events={calendarEvents}
+              displayEventTime={false}
             />
           </div>
         </div>
