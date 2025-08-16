@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from datetime import datetime
 
 class SubmitAvailabilityRequest(BaseModel):
     session_uuid: str
@@ -12,8 +12,8 @@ class SubmitAvailabilityRequest(BaseModel):
 class AvailabilityResponse(BaseModel):
     name: str
     event_name: str
-    start_date: str
-    end_date: str | None
+    start_date: datetime
+    end_date: datetime | None
 
     class Config:
         orm_mode = True

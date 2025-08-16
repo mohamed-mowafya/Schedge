@@ -1,13 +1,20 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import SQLAlchemyError
 from api.models.session_model import SessionModel
 
+
 def fetch_session(session_uuid: str, db: SessionModel):
     try:
-        session = db.query(SessionModel).filter(SessionModel.session_uuid == session_uuid).first()
+        session = (
+            db.query(SessionModel)
+            .filter(SessionModel.session_uuid == session_uuid)
+            .options(joinedload(SessionModel.availabilities))
+            .first()
+        )
         return session
     except SQLAlchemyError as e:
         raise e
+
 
 def add_session(db: SessionModel, session_data: dict):
     try:
